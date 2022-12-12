@@ -7,9 +7,11 @@ workflows:
   build_and_deploy:
     jobs:
       - aws-ecr/build-and-push-image:
+          context: AWS
           repo: ascii27 
           tag: ${CIRCLE_SHA1}
 #      - aws-ecs/deploy-service-update:
+#          context: AWS
 #          cluster: 'bones'
 #          container-image-name-updates: 'container=bones-server,tag=${CIRCLE_SHA1}'
 #          family: 'bones-server'
