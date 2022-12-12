@@ -7,12 +7,24 @@ terraform {
   }
 }
 
-provider "circleci" {
-  token   = "0ff13edf53c1a86bef4250342b1c12979436d058"
+variable "circleci_token" {
+ type        = string
 }
 
-resource "circleci_project" "my-basic-web-service" {
+variable "project_name" {
+ type        = string
+}
+
+variable "github_user" {
+ type        = string
+}
+
+provider "circleci" {
+  token   = var.circleci_token 
+}
+
+resource "circleci_project" "app_project" {
   vcs_type = "github"
-  username = "ascii27"
-  name     = "my-basic-web-service"
+  username = var.github_user
+  name     = var.project_name
 }
