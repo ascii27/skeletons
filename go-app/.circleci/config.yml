@@ -1,0 +1,18 @@
+version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@8.1.3
+  aws-ecs: circleci/aws-ecs@3.2.0
+
+workflows:
+  build_and_deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          repo: ascii27 
+          tag: ${CIRCLE_SHA1}
+#      - aws-ecs/deploy-service-update:
+#          cluster: 'bones'
+#          container-image-name-updates: 'container=bones-server,tag=${CIRCLE_SHA1}'
+#          family: 'bones-server'
+#          service-name: 'bones-service'
+#          requires:
+#            - aws-ecr/build-and-push-image
