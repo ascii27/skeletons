@@ -114,7 +114,7 @@ resource "aws_ecs_service" "my-web-app-service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.my-web-service-lb-tg.arn
-    container_name   = "first"
+    container_name   = "my-web-app"
     container_port   = 8080
   }
 
