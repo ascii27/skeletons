@@ -10,11 +10,11 @@ workflows:
           context: AWS
           repo: ascii27 
           tag: ${CIRCLE_SHA1}
-#      - aws-ecs/deploy-service-update:
-#          context: AWS
-#          cluster: 'bones'
-#          container-image-name-updates: 'container=bones-server,tag=${CIRCLE_SHA1}'
-#          family: 'bones-server'
-#          service-name: 'bones-service'
-#          requires:
-#            - aws-ecr/build-and-push-image
+      - aws-ecs/deploy-service-update:
+          context: AWS
+          cluster: 'bones'
+          container-image-name-updates: 'container=my-web-app,tag=${CIRCLE_SHA1}'
+          family: 'my-web-app'
+          service-name: 'my-web-app-service'
+          requires:
+            - aws-ecr/build-and-push-image
