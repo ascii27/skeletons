@@ -7,7 +7,7 @@ terraform {
   },
   backend "s3" {
     bucket = "bones-server"
-    key    = "my-web-server/infra/circleci"
+    key    = "statefiles/my-web-server/infra/circleci/terraform.tfstate"
     region = "us-east-1"
   }
 }
