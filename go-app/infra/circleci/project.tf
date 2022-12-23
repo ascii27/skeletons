@@ -4,7 +4,7 @@ terraform {
       source  = "severgroup-tt/circleci"
       version = "~>0.6.5"
     }
-  },
+  }
   backend "s3" {
     bucket = "bones-server"
     key    = "statefiles/my-web-server/infra/circleci/terraform.tfstate"
