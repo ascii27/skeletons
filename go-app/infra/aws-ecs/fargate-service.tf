@@ -5,6 +5,11 @@ terraform {
       version = "~> 4.0"
     }
   }
+  backend "s3" {
+    bucket = "bones-server"
+    key    = "my-web-server/infra/aws-ecs"
+    region = "us-east-1"
+  }
 }
 
 variable "vpc_id" {
