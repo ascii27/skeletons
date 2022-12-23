@@ -4,7 +4,7 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.0"
     }
-  }
+  },
   backend "s3" {
     bucket = "bones-server"
     key    = "my-web-server/infra/aws-ecs"
