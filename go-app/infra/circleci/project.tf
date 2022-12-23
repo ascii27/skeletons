@@ -4,6 +4,11 @@ terraform {
       source  = "severgroup-tt/circleci"
       version = "~>0.6.5"
     }
+  },
+  backend "s3" {
+    bucket = "bones-server"
+    key    = "my-web-server/infra/circleci"
+    region = "us-east-1"
   }
 }
 
