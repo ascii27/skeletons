@@ -5,11 +5,7 @@ terraform {
       version = "~> 4.0"
     }
   }
-  backend "s3" {
-    bucket = "bones-server"
-    key    = "statefiles/my-web-server/infra/aws-ecs/terraform.tfstate"
-    region = "us-east-1"
-  }
+  backend "s3" {}
 }
 
 variable "vpc_id" {
