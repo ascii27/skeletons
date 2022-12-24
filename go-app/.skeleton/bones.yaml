@@ -1,0 +1,8 @@
+generate:
+  steps:
+    - name: "AWS Fargate"
+      handler: aws
+      path: infra/aws-ecs
+    - name: "CircleCI Project"
+      handler: circleci
+      path: infra/circleci
