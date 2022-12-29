@@ -2,9 +2,12 @@ generate:
   steps:
     - name: "Create Repo in Github"
       handler: github
+      cmd: CreateRepo
     - name: "Set up AWS Fargate"
       handler: aws
       path: infra/aws-ecs
+      cmd: CreateAWSInfra 
     - name: "Set up CircleCI project"
       handler: circleci
       path: infra/circleci
+      cmd: CreateProject
