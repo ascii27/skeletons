@@ -108,7 +108,7 @@ resource "aws_lb_listener" "{{.SERVICE_NAME}}-lb-listener" {
 resource "aws_ecs_service" "{{.SERVICE_NAME}}" {
   name            = "{{.SERVICE_NAME}}"
   cluster         = "arn:aws:ecs:us-east-1:268213776880:cluster/bones"
-  task_definition = aws_ecs_task_definition.my-web-app.arn
+  task_definition = aws_ecs_task_definition.{{.APP_NAME}}.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
