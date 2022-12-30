@@ -7,6 +7,9 @@ generate:
       handler: aws
       path: infra/aws-ecs
       cmd: CreateAWSInfra 
+      data:
+        - key: APP_NAME
+        - key: SERVICE_NAME
     - name: "Set up CircleCI project"
       handler: circleci
       path: infra/circleci

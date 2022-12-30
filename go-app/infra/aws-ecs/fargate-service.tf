@@ -30,8 +30,8 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
-resource "aws_ecs_task_definition" "my-web-app" {
-  family = "my-web-app"
+resource "aws_ecs_task_definition" "{{.APP_NAME}}" {
+  family = "{{.APP_NAME}}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 1024
@@ -39,8 +39,7 @@ resource "aws_ecs_task_definition" "my-web-app" {
   execution_role_arn       = "arn:aws:iam::268213776880:role/ecsTaskExecutionRole"
   container_definitions = jsonencode([
     {
-      name      = "my-web-app"
-      image     = "268213776880.dkr.ecr.us-east-1.amazonaws.com/ascii27:cdba04779a3b29c7ff244e8d61a3f98180070e18"
+      name      = "{{.APP_NAME}}"
       cpu       = 1024
       memory    = 2048 
       essential = true
@@ -54,8 +53,8 @@ resource "aws_ecs_task_definition" "my-web-app" {
   ])
 }
 
-resource "aws_security_group" "my-web-service-alb-security-group" {
-  name        = "my-web-service-alb-security-group"
+resource "aws_security_group" "{{.SERVICE_NAME}}-alb-security-group" {
+  name        = "{{.SERVICE_NAME}}-alb-security-group"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -75,8 +74,8 @@ resource "aws_security_group" "my-web-service-alb-security-group" {
 
 
 
-resource "aws_lb_target_group" "my-web-service-lb-tg" {
-  name     = "my-web-service-lb-tg"
+resource "aws_lb_target_group" "{{.SERVICE_NAME}}-lb-tg" {
+  name     = "{{.SERVICE_NAME}}-lb-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -87,34 +86,34 @@ resource "aws_lb_target_group" "my-web-service-lb-tg" {
   }
 }
 
-resource "aws_lb" "my-web-service-lb" {
-  name            = "my-web-service-lb"
+resource "aws_lb" "{{.SERVICE_NAME}}-lb" {
+  name            = "{{.SERVICE_NAME}}-lb"
   subnets         = ["subnet-e0adc8cd","subnet-208cd969"]
-  security_groups = [aws_security_group.my-web-service-alb-security-group.id]
-  depends_on = [aws_security_group.my-web-service-alb-security-group]
+  security_groups = [aws_security_group.{{.SERVICE_NAME}}-alb-security-group.id]
+  depends_on = [aws_security_group.{{.SERVICE_NAME}}-alb-security-group]
 }
 
-resource "aws_lb_listener" "my-web-service-lb-listener" {
-  load_balancer_arn = aws_lb.my-web-service-lb.id
+resource "aws_lb_listener" "{{.SERVICE_NAME}}-lb-listener" {
+  load_balancer_arn = aws_lb.{{.SERVICE_NAME}}-lb.id
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.my-web-service-lb-tg.id
+    target_group_arn = aws_lb_target_group.{{.SERVICE_NAME}}-lb-tg.id
     type             = "forward"
   }
-  depends_on = [aws_lb_target_group.my-web-service-lb-tg, aws_lb.my-web-service-lb]
+  depends_on = [aws_lb_target_group.{{.SERVICE_NAME}}-lb-tg, aws_lb.{{.SERVICE_NAME}}-lb]
 }
 
-resource "aws_ecs_service" "my-web-app-service" {
-  name            = "my-web-app-service"
+resource "aws_ecs_service" "{{.SERVICE_NAME}}" {
+  name            = "{{.SERVICE_NAME}}"
   cluster         = "arn:aws:ecs:us-east-1:268213776880:cluster/bones"
   task_definition = aws_ecs_task_definition.my-web-app.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.my-web-service-lb-tg.arn
+    target_group_arn = aws_lb_target_group.{{.SERVICE_NAME}}-lb-tg.arn
     container_name   = "my-web-app"
     container_port   = 8080
   }
@@ -125,6 +124,6 @@ resource "aws_ecs_service" "my-web-app-service" {
     assign_public_ip = true
   }
 
-  depends_on = [aws_lb_listener.my-web-service-lb-listener]
+  depends_on = [aws_lb_listener.{{.SERVICE_NAME}}-lb-listener]
 }
 
