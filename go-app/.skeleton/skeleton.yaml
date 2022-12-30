@@ -14,3 +14,16 @@ generate:
       handler: circleci
       path: infra/circleci
       cmd: CreateProject
+destroy:
+  steps:
+    - name: "Remove AWS Fargate"
+      handler: aws
+      path: infra/aws-ecs
+      cmd: DestroyAWSInfra 
+    - name: "Remove CircleCI project"
+      handler: circleci
+      path: infra/circleci
+      cmd: DestroyProject
+    - name: "Delete Repo in Github"
+      handler: github
+      cmd: DeleteRepo
