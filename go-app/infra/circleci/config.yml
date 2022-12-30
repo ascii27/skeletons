@@ -8,13 +8,13 @@ workflows:
     jobs:
       - aws-ecr/build-and-push-image:
           context: AWS
-          repo: ascii27 
+          repo: {{.ECR_REPO}}
           tag: ${CIRCLE_SHA1}
-      - aws-ecs/deploy-service-update:
-          context: AWS
-          cluster: 'bones'
-          container-image-name-updates: 'container=my-web-app,tag=${CIRCLE_SHA1}'
-          family: 'my-web-app'
-          service-name: 'my-web-app-service'
-          requires:
-            - aws-ecr/build-and-push-image
+#      - aws-ecs/deploy-service-update:
+#          context: AWS
+#          cluster: '{{.ECS_CLUSTER}}'
+#          container-image-name-updates: 'container={{.APP_NAME}},tag=${CIRCLE_SHA1}'
+#          family: '{{.APP_NAME}}'
+#          service-name: '{{.SERVICE_NAME}}'
+#          requires:
+#            - aws-ecr/build-and-push-image
