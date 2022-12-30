@@ -1,4 +1,7 @@
 generate:
+  input:
+    - key: ECR_REPO
+    - key: ECS_CLUSTER
   steps:
     - name: "Create Repo in Github"
       handler: github
@@ -7,15 +10,7 @@ generate:
       handler: aws
       path: infra/aws-ecs
       cmd: CreateAWSInfra 
-      data:
-        - key: APP_NAME
-        - key: SERVICE_NAME
     - name: "Set up CircleCI project"
       handler: circleci
       path: infra/circleci
       cmd: CreateProject
-      data:
-        - key: ECR_REPO
-        - key: ECS_CLUSTER
-        - key: APP_NAME
-        - key: SERVICE_NAME
